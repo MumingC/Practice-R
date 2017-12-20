@@ -1,0 +1,46 @@
+---
+title: "NTUH maps"
+author: "MM Chien"
+date: "December 20, 2017"
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+This is a simple map using Leaflet to show the location of National Taiwan University Hospital buildings
+
+
+## Basic maps
+
+```{r, echo=FALSE}
+library(leaflet)
+my_map <- leaflet() %>% 
+  addTiles() 
+  
+```
+
+## Set up the markers
+National Taiwan University Hospital (NTUH) has 3 main buildings
+West Building: 25.04179,121.51729
+East Building: 25.04060,121.51975
+Children's Hospital: 25.04433,121.51857
+
+```{r, echo=FALSE}
+NTUH <- data.frame(
+  lat=c(25.04179, 25.04060, 25.04433),
+  lng=c(121.51729, 121.51975, 121.51857),
+  name=c(
+    "<a href='http://www.ntuh.gov.tw/' >West Building</a>", 
+    "<a href='http://www.ntuh.gov.tw/'>East Building</a>", 
+    "<a href='https://www.ntuh.gov.tw/ntuch/default.aspx'>Children's Hospital</a>")
+)
+NTUH%>%
+  leaflet() %>%
+  addTiles()%>%
+  addMarkers(popup = NTUH$name)
+  
+```
+
