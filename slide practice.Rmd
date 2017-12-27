@@ -1,0 +1,50 @@
+---
+title: "Presentation practice (week 3 assignment)"
+author: "MM Chien"
+date: "December 22, 2017"
+output: ioslides_presentation
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+library(plotly)
+library(tidyr)
+library(lubridate)
+```
+
+## Introduction
+
+This is the data of virus isolation from patients with upper respiratory tract infection in Taiwan. Data was provided on Taiwan CDC website
+
+```{r, echo=FALSE}
+dat <- read.csv("virus.csv")
+colnames(dat)[1] <- "Yearweek"
+dat<- dat[,1:7]  ##remove the last variable, which is the positive yield rate
+dat.long <- gather(dat, virus, yieldno, -Yearweek)
+dat.long2 <- separate(dat.long, Yearweek, into=c("Year","Week"), sep=4)
+```
+
+## Virus type
+- Most common upper respiratory tract infection virus type are as below:
+
+    + RSV
+    + Parainfluenza
+    + CMV
+    + Adenovirus
+    + Influenza
+
+## Yield with virus
+
+We can see that the most common respiratory tract virus yielded is still influenza, follow by parainfluenza.
+```{r, echo=FALSE, warning=FALSE}
+plot_ly(dat.long2, x=~Week, y=~yieldno, type="bar", color=~virus)
+```
+
+## Influenza in 2016 and 2017
+Comparing 2016 with 2017
+
+```{r, echo=FALSE, warning=FALSE}
+dat.influenza <- subset(dat.long2, virus=="Influenza")
+plot_ly(dat.influenza, x=~Week, y=~yieldno, type="bar", color=~Year)
+```
